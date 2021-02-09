@@ -6,13 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   paper: {
     padding: theme.spacing(2),
-    margin: "auto",
-    maxWidth: 500,
+    maxWidth: 450,
+    border: "1px solid",
   },
   image: {
     width: 128,
@@ -30,42 +27,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function CardProduct({ product }) {
-  console.log(product);
+export function CardProduct({ product, currency }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase className={classes.image}>
-              <img
-                className={classes.img}
-                alt={product.name}
-                src={`./img/${product.image}`}
-              />
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
-                  {product.name}
-                </Typography>
-                <Typography variant="subtitle1">{product.price}</Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  className={classes.description}
-                >
-                  {product.description}
-                </Typography>
-              </Grid>
+    <Paper className={classes.paper}>
+      <Grid container spacing={2}>
+        <Grid item>
+          <ButtonBase className={classes.image}>
+            <img
+              className={classes.img}
+              alt={product.name}
+              src={`./img/${product.image}`}
+            />
+          </ButtonBase>
+        </Grid>
+        <Grid item xs={12} sm container>
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              <Typography
+                gutterBottom
+                variant="subtitle1"
+                style={{ height: 56 }}
+              >
+                {product.name}
+              </Typography>
+              <Typography gutterBottom variant="subtitle1">{`${Math.round(
+                product.price / currency.value
+              )} ${currency.label}`}</Typography>
+              <Typography
+                variant="body2"
+                gutterBottom
+                className={classes.description}
+              >
+                {product.description}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
-    </div>
+      </Grid>
+    </Paper>
   );
 }
