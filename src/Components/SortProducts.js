@@ -1,5 +1,4 @@
 import React from "react";
-import data from "./products.json";
 import {
   FormControl,
   FormControlLabel,
@@ -7,34 +6,27 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import {
+  productsAlpha,
+  productsCheap,
+  productsExpensive,
+} from "../redux/Products/actions";
 
 export function SortProducts() {
-  const [products, setProducts] = React.useState(
-    data.products.sort((a, b) => b.price - a.price)
-  );
-
+  const dispatch = useDispatch();
   const [sort, setSort] = React.useState("expensive");
 
   const handleChange = (event) => {
     const sort = event.target.value;
-    const sortProducts = [...products];
     if (sort === "expensive") {
-      sortProducts.sort((a, b) => b.price - a.price);
+      dispatch(productsExpensive());
     } else if (sort === "cheap") {
-      sortProducts.sort((a, b) => a.price - b.price);
+      dispatch(productsCheap());
     } else if (sort === "alphabetically") {
-      sortProducts.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
+      dispatch(productsAlpha());
     }
     setSort(sort);
-    setProducts(sortProducts);
   };
 
   return (

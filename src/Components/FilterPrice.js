@@ -1,12 +1,22 @@
 import React from "react";
 import { Box, Button, Input } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { productsPrice } from "../redux/Products/actions";
 
-export const FilterPrice = ({ value, setValue, min, max, count }) => {
+export const FilterPrice = () => {
+  const data = JSON.parse(localStorage.getItem("products"));
+  const dispatch = useDispatch();
+
+  let max = data.reduce((acc, curr) => (acc.price > curr.price ? acc : curr));
+  let min = data.reduce((acc, curr) => (acc.price < curr.price ? acc : curr));
+
+  const [filterPrice, setFilterPrice] = React.useState([min.price, max.price]);
+
   const handleInputChange = (event, index) => {
-    const newValue = [...value];
+    const newValue = [...filterPrice];
     newValue[index] =
       event.target.value === "" ? "" : Number(event.target.value);
-    setValue(newValue);
+    setFilterPrice(newValue);
   };
   return (
     <Box>
@@ -19,7 +29,7 @@ export const FilterPrice = ({ value, setValue, min, max, count }) => {
         }}
       >
         <Input
-          value={value[0]}
+          value={filterPrice[0]}
           margin="dense"
           onChange={(e) => handleInputChange(e, 0)}
           inputProps={{
@@ -43,7 +53,7 @@ export const FilterPrice = ({ value, setValue, min, max, count }) => {
         </div>
 
         <Input
-          value={value[1]}
+          value={filterPrice[1]}
           margin="dense"
           onChange={(e) => handleInputChange(e, 1)}
           inputProps={{
@@ -53,7 +63,11 @@ export const FilterPrice = ({ value, setValue, min, max, count }) => {
             type: "number",
           }}
         />
-        <Button variant="contained" color="primary" onClick={() => count()}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => dispatch(productsPrice(filterPrice))}
+        >
           Ok
         </Button>
       </Box>

@@ -32,7 +32,7 @@ export function CardProduct({ product }) {
   const classes = useStyles();
   const {
     currencyReducer: { currency },
-  } = useSelector((state) => state)
+  } = useSelector((state) => state);
 
   return (
     <Paper className={classes.paper}>
@@ -42,7 +42,12 @@ export function CardProduct({ product }) {
             <img
               className={classes.img}
               alt={product.name}
-              src={`./img/${product.image}`}
+              src={
+                product.image.length > 20
+                  ? product.image
+                  : `./img/${product.image}`
+              }
+              loading="lazy"
             />
           </ButtonBase>
         </Grid>

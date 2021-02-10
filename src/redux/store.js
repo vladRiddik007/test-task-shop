@@ -3,9 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
 import currencyReducer from './Currency/reducers'
+import productsReducer from './Products/reducers'
 
 const rootReducer = combineReducers({
   currencyReducer,
+  productsReducer,
 })
 
 const INITIAL_STATE = {}
