@@ -32,8 +32,7 @@ export function FormCreateProduct() {
     setNewProduct({ ...newProduct, [prop]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     dispatch(
       productCreate({
         id: Math.random(),
@@ -46,7 +45,20 @@ export function FormCreateProduct() {
   };
 
   return (
-    <form className={classes.root} noValidate onSubmit={handleSubmit}>
+    <form
+      className={classes.root}
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSubmit();
+        setNewProduct({
+          name: "",
+          price: 0,
+          description: "",
+          image: "",
+        });
+      }}
+    >
       <Box mt={4}>
         <TextField
           required
@@ -80,8 +92,19 @@ export function FormCreateProduct() {
       <Box mt={4}>
         <ImgFile item={newProduct} changeItem={setNewProduct} />
       </Box>
-
-      <Button variant="contained" color="primary" type="submit">
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        disabled={
+          !(
+            newProduct.name &&
+            newProduct.price &&
+            newProduct.description &&
+            newProduct.image
+          )
+        }
+      >
         Save
       </Button>
     </form>
