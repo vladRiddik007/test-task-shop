@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Input } from "@material-ui/core";
 
-export const PriceComponent = ({ value, setValue, min, max, count }) => {
+export const FilterPrice = ({ value, setValue, min, max, count }) => {
   const handleInputChange = (event, index) => {
     const newValue = [...value];
     newValue[index] =

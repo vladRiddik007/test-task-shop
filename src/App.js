@@ -2,8 +2,6 @@ import React from "react";
 import data from "./products.json";
 import {
   Box,
-  Button,
-  ButtonGroup,
   Container,
   Divider,
   FormControl,
@@ -15,14 +13,20 @@ import {
 } from "@material-ui/core";
 import { CardProduct } from "./Components/CardProduct";
 import { makeStyles } from "@material-ui/core/styles";
-import { PriceComponent } from "./Components/PriceComponent";
+import { FilterPrice } from "./Components/FilterPrice";
+import { FormCreateProduct } from "./Components/FormCreateProduct";
+import { CurrencyToggle } from "./Components/CurrencyToggle";
 
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
+    marginTop: 30,
   },
-  wrapSorting: {
+  wrapFilters: {
     minWidth: 300,
+    borderRight: "1px solid",
+    marginRight: 10,
+    paddingRight: 10,
   },
   wrapProducts: {
     height: 580,
@@ -79,72 +83,63 @@ function App() {
     setProducts(newProducts);
   };
 
-  const [currency, setCurrency] = React.useState({
-    label: "UAH",
-    value: 1,
-  });
-
   return (
-    <Container className={classes.root}>
-      <Box className={classes.wrapSorting}>
-        <Box mt={4}>
-          <PriceComponent
-            value={filterPrice}
-            setValue={setFilterPrice}
-            min={min.price}
-            max={max.price}
-            count={handleCount}
-          />
+    <>
+      <Container className={classes.root}>
+        <Box className={classes.wrapFilters}>
+          <Box mt={4}>
+            <FilterPrice
+              value={filterPrice}
+              setValue={setFilterPrice}
+              min={min.price}
+              max={max.price}
+              count={handleCount}
+            />
+          </Box>
+          <Box mt={4}>
+            <CurrencyToggle />
+          </Box>
+          <Box mt={4}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Sort</FormLabel>
+              <RadioGroup
+                aria-label="gender"
+                name="gender1"
+                value={sort}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="cheap"
+                  control={<Radio />}
+                  label="Price from low to higt"
+                />
+                <FormControlLabel
+                  value="expensive"
+                  control={<Radio />}
+                  label="Price from higt to low"
+                />
+                <FormControlLabel
+                  value="alphabetically"
+                  control={<Radio />}
+                  label="Alphabetically"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Box>
         </Box>
-        <Box mt={4}>
-          <ButtonGroup disableElevation variant="contained" color="primary">
-            <Button onClick={() => setCurrency({ label: "USD", value: 27.8 })}>
-              USD
-            </Button>
-            <Button onClick={() => setCurrency({ label: "UAH", value: 1 })}>
-              UAH
-            </Button>
-          </ButtonGroup>
+        <Divider orientation="vertical" />
+        <Box className={classes.wrapProducts}>
+          <Grid container style={{ gridGap: 10 }} justify="space-between">
+            {products.map((product) => (
+              <Grid item xs={12} sm={5} key={product.id}>
+                <CardProduct product={product} />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
-        <Box mt={4}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Sort</FormLabel>
-            <RadioGroup
-              aria-label="gender"
-              name="gender1"
-              value={sort}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="cheap"
-                control={<Radio />}
-                label="Price from low to higt"
-              />
-              <FormControlLabel
-                value="expensive"
-                control={<Radio />}
-                label="Price from higt to low"
-              />
-              <FormControlLabel
-                value="alphabetically"
-                control={<Radio />}
-                label="Alphabetically"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      </Box>
-      <Divider orientation="vertical" />
-      <Box className={classes.wrapProducts}>
-        <Grid container style={{ gridGap: 10 }} justify="space-between">
-          {products.map((product) => (
-            <Grid item xs={12} sm={5} key={product.id}>
-              <CardProduct product={product} currency={currency} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Container>
+      </Container>
+      <FormCreateProduct />
+    </>
   );
 }
 

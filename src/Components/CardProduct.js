@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,8 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function CardProduct({ product, currency }) {
+export function CardProduct({ product }) {
   const classes = useStyles();
+  const {
+    currencyReducer: { currency },
+  } = useSelector((state) => state)
 
   return (
     <Paper className={classes.paper}>
